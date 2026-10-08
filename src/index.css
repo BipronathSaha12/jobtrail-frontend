@@ -772,7 +772,7 @@ body {
 }
 
 .auth-link {
-  color: var(--accent-primary);
+  color: #a5b4fc; /* Was var(--accent-primary) which had insufficient contrast */
   text-decoration: none;
   font-weight: 600;
 }
