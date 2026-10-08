@@ -89,7 +89,7 @@ export default function Dashboard() {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
           <h2 style={{ fontSize: "1.35rem", fontWeight: 700 }}>Recent Applications</h2>
           {recentApps.length > 0 && (
-            <Link to="/applications" style={{ color: "var(--accent-primary)", fontWeight: 600, display: "flex", alignItems: "center", gap: "0.25rem", textDecoration: "none" }}>
+            <Link to="/applications" style={{ color: "#a5b4fc", fontWeight: 600, display: "flex", alignItems: "center", gap: "0.25rem", textDecoration: "none" }}>
               <span>See all</span>
               <ArrowRight size={16} />
             </Link>
