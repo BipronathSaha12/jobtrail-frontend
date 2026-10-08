@@ -32,9 +32,10 @@ export default function ApplicationCard({ application, onDelete }) {
               target="_blank"
               rel="noopener noreferrer"
               title="Open Job Link"
+              aria-label={`Open job link for ${application.position} at ${application.company}`}
               style={{ color: "var(--accent-primary)", display: "inline-flex" }}
             >
-              <ExternalLink size={14} />
+              <ExternalLink size={14} aria-hidden="true" />
             </a>
           )}
         </div>
@@ -65,15 +66,17 @@ export default function ApplicationCard({ application, onDelete }) {
           to={`/applications/${application.id}/edit`}
           className="action-btn"
           title="Edit Application"
+          aria-label={`Edit application for ${application.position} at ${application.company}`}
         >
-          <Edit2 size={18} />
+          <Edit2 size={18} aria-hidden="true" />
         </Link>
         <button
           onClick={() => onDelete(application)}
           className="action-btn delete"
           title="Delete Application"
+          aria-label={`Delete application for ${application.position} at ${application.company}`}
         >
-          <Trash2 size={18} />
+          <Trash2 size={18} aria-hidden="true" />
         </button>
       </div>
     </div>

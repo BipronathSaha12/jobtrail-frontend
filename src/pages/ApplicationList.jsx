@@ -116,17 +116,18 @@ export default function ApplicationList() {
       {/* Filter and Search Bar */}
       <div className="filter-bar">
         <div className="search-input-wrapper">
-          <Search size={18} className="search-icon" />
+          <Search size={18} className="search-icon" aria-hidden="true" />
           <input
             type="text"
             className="search-input"
             placeholder="Search company or position..."
             value={search}
             onChange={handleSearchChange}
+            aria-label="Search company or position"
           />
         </div>
 
-        <select className="select-input" value={status} onChange={handleStatusChange}>
+        <select className="select-input" value={status} onChange={handleStatusChange} aria-label="Filter by application status">
           <option value="">All Statuses</option>
           <option value="WISHLIST">Wishlist</option>
           <option value="APPLIED">Applied</option>
@@ -135,7 +136,7 @@ export default function ApplicationList() {
           <option value="REJECTED">Rejected</option>
         </select>
 
-        <select className="select-input" value={jobType} onChange={handleJobTypeChange}>
+        <select className="select-input" value={jobType} onChange={handleJobTypeChange} aria-label="Filter by job type">
           <option value="">All Job Types</option>
           <option value="ONSITE">Onsite</option>
           <option value="REMOTE">Remote</option>
@@ -173,14 +174,17 @@ export default function ApplicationList() {
                   className="page-btn"
                   onClick={() => setPage((p) => Math.max(p - 1, 1))}
                   disabled={page === 1}
+                  aria-label="Previous page"
                 >
-                  <ChevronLeft size={16} />
+                  <ChevronLeft size={16} aria-hidden="true" />
                 </button>
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
                   <button
                     key={pageNum}
                     className={`page-btn ${pageNum === page ? "active" : ""}`}
                     onClick={() => setPage(pageNum)}
+                    aria-label={`Page ${pageNum}`}
+                    aria-current={pageNum === page ? "page" : undefined}
                   >
                     {pageNum}
                   </button>
@@ -189,8 +193,9 @@ export default function ApplicationList() {
                   className="page-btn"
                   onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
                   disabled={page === totalPages}
+                  aria-label="Next page"
                 >
-                  <ChevronRight size={16} />
+                  <ChevronRight size={16} aria-hidden="true" />
                 </button>
               </div>
             </div>
