@@ -5,7 +5,7 @@
 ---
 
 ## 🔗 Related Repositories
-- **Backend Repository**: [JobTrail Backend (Django REST Framework)](https://github.com/YOUR_GITHUB_USERNAME/jobtrail-backend)
+- **Backend Repository**: [JobTrail Backend (Django REST Framework)](https://github.com/BipronathSaha12/jobtrail-backend)
 
 ---
 

@@ -120,6 +120,20 @@ export default function Login() {
               </>
             )}
           </button>
+          
+          <button
+            type="button"
+            className="btn btn-secondary"
+            style={{ width: "100%", marginTop: "0.75rem" }}
+            disabled={loading}
+            onClick={() => {
+              setForm({ username: 'demo', password: 'demo123' });
+            }}
+            title="Auto-fill demo credentials"
+          >
+            <User size={18} />
+            <span>Use Demo Account</span>
+          </button>
         </form>
 
         <div className="auth-footer">
