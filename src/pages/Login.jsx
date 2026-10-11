@@ -43,7 +43,7 @@ export default function Login() {
           setError("Invalid login credentials.");
         }
       } else if (!err.response) {
-        setError("Network error. Please make sure the backend server is running on http://127.0.0.1:8000.");
+        setError("Network error: Could not reach the backend API server. On Render free tier, the service spins down during inactivity and takes ~30-50 seconds to wake up. Please wait a moment and try again.");
       } else {
         setError("Invalid username or password. Please try again.");
       }
