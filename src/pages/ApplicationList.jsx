@@ -105,6 +105,21 @@ export default function ApplicationList() {
   };
 
   const totalPages = Math.ceil((data.count || 0) / 10);
+  const getPageNumbers = () => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    const pages = [];
+    if (page <= 4) {
+      pages.push(1, 2, 3, 4, 5, "...", totalPages);
+    } else if (page >= totalPages - 3) {
+      pages.push(1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+    } else {
+      pages.push(1, "...", page - 1, page, page + 1, "...", totalPages);
+    }
+    return pages;
+  };
+
   const isFiltered = Boolean(search.trim() || status || jobType);
 
   return (
@@ -186,17 +201,23 @@ export default function ApplicationList() {
                 >
                   <ChevronLeft size={16} aria-hidden="true" />
                 </button>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                  <button
-                    key={pageNum}
-                    className={`page-btn ${pageNum === page ? "active" : ""}`}
-                    onClick={() => setPage(pageNum)}
-                    aria-label={`Page ${pageNum}`}
-                    aria-current={pageNum === page ? "page" : undefined}
-                  >
-                    {pageNum}
-                  </button>
-                ))}
+                {getPageNumbers().map((pageNum, idx) =>
+                  pageNum === "..." ? (
+                    <span key={`ellipsis-${idx}`} className="pagination-ellipsis" style={{ padding: "0 0.35rem", color: "var(--text-muted)", userSelect: "none" }}>
+                      …
+                    </span>
+                  ) : (
+                    <button
+                      key={pageNum}
+                      className={`page-btn ${pageNum === page ? "active" : ""}`}
+                      onClick={() => setPage(pageNum)}
+                      aria-label={`Page ${pageNum}`}
+                      aria-current={pageNum === page ? "page" : undefined}
+                    >
+                      {pageNum}
+                    </button>
+                  )
+                )}
                 <button
                   className="page-btn"
                   onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
