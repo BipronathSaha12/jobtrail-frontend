@@ -97,6 +97,13 @@ export default function ApplicationList() {
     }
   };
 
+  const handleStatusUpdate = (updatedApp) => {
+    setData((prev) => ({
+      ...prev,
+      results: prev.results.map((item) => (item.id === updatedApp.id ? updatedApp : item)),
+    }));
+  };
+
   const totalPages = Math.ceil((data.count || 0) / 10);
   const isFiltered = Boolean(search.trim() || status || jobType);
 
@@ -159,6 +166,7 @@ export default function ApplicationList() {
                 key={app.id}
                 application={app}
                 onDelete={(targetApp) => setAppToDelete(targetApp)}
+                onStatusChange={handleStatusUpdate}
               />
             ))}
           </div>

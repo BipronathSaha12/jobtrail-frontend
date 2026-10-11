@@ -23,11 +23,13 @@ export default function ConfirmModal({ isOpen, title, message, onConfirm, onCanc
             <h3 className="modal-title" style={{ margin: 0 }}>Confirm Delete</h3>
           </div>
           <button
+            type="button"
             onClick={onCancel}
             disabled={isDeleting}
-            style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer" }}
+            className="modal-close-btn"
+            aria-label="Close confirmation dialog"
           >
-            <X size={20} />
+            <X size={20} aria-hidden="true" />
           </button>
         </div>
 
@@ -38,8 +40,9 @@ export default function ConfirmModal({ isOpen, title, message, onConfirm, onCanc
           <p>{message || "This action cannot be undone."}</p>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.75rem" }}>
+        <div className="modal-actions">
           <button
+            type="button"
             className="btn btn-secondary"
             onClick={onCancel}
             disabled={isDeleting}
@@ -47,6 +50,7 @@ export default function ConfirmModal({ isOpen, title, message, onConfirm, onCanc
             Cancel
           </button>
           <button
+            type="button"
             className="btn btn-danger"
             onClick={onConfirm}
             disabled={isDeleting}

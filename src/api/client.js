@@ -7,11 +7,17 @@ const client = axios.create({
   },
 });
 
-// 1. Attach the token to every request
+// 1. Attach the token and user timezone to every request
 client.interceptors.request.use((config) => {
   const token = localStorage.getItem("access");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+  }
+  try {
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "Asia/Dhaka";
+    config.headers["X-Timezone"] = userTimezone;
+  } catch {
+    config.headers["X-Timezone"] = "Asia/Dhaka";
   }
   return config;
 });

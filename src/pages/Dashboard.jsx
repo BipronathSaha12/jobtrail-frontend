@@ -58,6 +58,18 @@ export default function Dashboard() {
     }
   };
 
+  const handleStatusUpdate = async (updatedApp) => {
+    setRecentApps((prev) =>
+      prev.map((app) => (app.id === updatedApp.id ? updatedApp : app))
+    );
+    try {
+      const statsData = await getStats();
+      setStats(statsData);
+    } catch (e) {
+      console.error("Failed to refresh stats:", e);
+    }
+  };
+
   if (loading) return <Loader message="Loading dashboard statistics..." />;
   if (error) return <ErrorState message="Could not load your dashboard stats." onRetry={fetchDashboardData} />;
 
@@ -105,6 +117,7 @@ export default function Dashboard() {
                 key={app.id}
                 application={app}
                 onDelete={(appToDel) => setAppToDelete(appToDel)}
+                onStatusChange={handleStatusUpdate}
               />
             ))}
           </div>

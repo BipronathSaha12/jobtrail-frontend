@@ -10,12 +10,20 @@ export default function ApplicationForm() {
   const isEditMode = Boolean(id);
   const navigate = useNavigate();
 
+  const getTodayLocalDateString = () => {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   const [form, setForm] = useState({
     company: "",
     position: "",
     status: "WISHLIST",
     job_type: "ONSITE",
-    applied_on: "",
+    applied_on: isEditMode ? "" : getTodayLocalDateString(),
     expected_salary: "",
     job_link: "",
     notes: "",
@@ -64,10 +72,10 @@ export default function ApplicationForm() {
     setErrors({});
     setGeneralError(null);
 
-    // Prepare payload
+    // Prepare payload ensuring local date is used if none specified
     const payload = {
       ...form,
-      applied_on: form.applied_on || null,
+      applied_on: form.applied_on || getTodayLocalDateString(),
       expected_salary: form.expected_salary !== "" ? Number(form.expected_salary) : null,
     };
 
