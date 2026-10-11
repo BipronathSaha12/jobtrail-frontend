@@ -1,7 +1,13 @@
 import axios from "axios";
 
+const getBaseURL = () => {
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
+  if (import.meta.env.PROD) return "https://jobtrail-backend-3.onrender.com/api";
+  return "http://127.0.0.1:8000/api";
+};
+
 const client = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api",
+  baseURL: getBaseURL(),
   headers: {
     "Content-Type": "application/json",
   },

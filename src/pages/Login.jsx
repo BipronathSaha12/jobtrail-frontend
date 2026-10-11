@@ -63,15 +63,17 @@ export default function Login() {
     } catch (err) {
       if (err.response?.data?.detail) {
         setError(err.response.data.detail);
+      } else if (!err.response) {
+        setError("Could not connect to backend server. If using Render free tier, it may take 30-50 seconds to wake up from inactivity. Please wait a moment and try again.");
       } else {
-        setError("Could not sign in with demo account. Please ensure the backend server is running.");
+        setError("Could not sign in with demo account. Please check credentials or backend status.");
       }
     } finally {
       setLoading(false);
     }
   };
 
-  const adminUrl = (import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api").replace(/\/api\/?$/, "/admin/");
+  const adminUrl = (import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "https://jobtrail-backend-3.onrender.com/api" : "http://127.0.0.1:8000/api")).replace(/\/api\/?$/, "/admin/");
 
   return (
     <div className="auth-page">
