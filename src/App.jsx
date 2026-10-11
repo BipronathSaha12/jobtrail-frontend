@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
+import Loader from "./components/Loader";
 
 // Pages
 import Login from "./pages/Login";
@@ -11,6 +12,8 @@ import Dashboard from "./pages/Dashboard";
 import ApplicationList from "./pages/ApplicationList";
 import ApplicationForm from "./pages/ApplicationForm";
 
+const KanbanBoard = lazy(() => import("./pages/KanbanBoard"));
+
 export default function App() {
   return (
     <AuthProvider>
@@ -18,7 +21,8 @@ export default function App() {
         <div className="app-container">
           <Navbar />
           <main className="main-content">
-            <Routes>
+            <Suspense fallback={<Loader message="Loading page..." />}>
+              <Routes>
               {/* Public Routes */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
@@ -37,6 +41,14 @@ export default function App() {
                 element={
                   <ProtectedRoute>
                     <ApplicationList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/kanban"
+                element={
+                  <ProtectedRoute>
+                    <KanbanBoard />
                   </ProtectedRoute>
                 }
               />
@@ -60,7 +72,8 @@ export default function App() {
               {/* Fallback redirect */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
-          </main>
+          </Suspense>
+        </main>
         </div>
       </Router>
     </AuthProvider>

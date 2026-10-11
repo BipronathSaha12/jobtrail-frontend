@@ -17,3 +17,17 @@ export const deleteApplication = (id) =>
 
 export const getStats = () =>
   client.get("/stats/").then((r) => r.data);
+
+export const listAllApplications = (params = {}) =>
+  client
+    .get("/applications/", { params: { page_size: 500, ...params } })
+    .then((r) => r.data);
+
+export const exportApplicationsCSV = (params = {}) =>
+  client
+    .get("/applications/export/", {
+      params,
+      responseType: "blob",
+    })
+    .then((r) => r.data);
+

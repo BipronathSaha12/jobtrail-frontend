@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { listApplications, deleteApplication } from "../api/applications";
+import { listApplications, listAllApplications, deleteApplication } from "../api/applications";
 import ApplicationCard from "../components/ApplicationCard";
+import ExportButton from "../components/ExportButton";
 import Loader from "../components/Loader";
 import EmptyState from "../components/EmptyState";
 import ErrorState from "../components/ErrorState";
 import ConfirmModal from "../components/ConfirmModal";
-import { Plus, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus, Search, ChevronLeft, ChevronRight, Kanban } from "lucide-react";
 
 export default function ApplicationList() {
   const [data, setData] = useState({ count: 0, results: [] });
@@ -122,6 +123,15 @@ export default function ApplicationList() {
 
   const isFiltered = Boolean(search.trim() || status || jobType);
 
+  const handleExportAll = async () => {
+    const params = {};
+    if (search.trim()) params.search = search.trim();
+    if (status) params.status = status;
+    if (jobType) params.job_type = jobType;
+    const res = await listAllApplications(params);
+    return res.results || [];
+  };
+
   return (
     <div>
       <div className="page-header">
@@ -129,10 +139,17 @@ export default function ApplicationList() {
           <h1 className="page-title">All Applications</h1>
           <p className="page-subtitle">Manage, filter, and track your job applications</p>
         </div>
-        <Link to="/applications/new" className="btn btn-primary">
-          <Plus size={18} />
-          <span>Add Application</span>
-        </Link>
+        <div className="page-header-actions">
+          <ExportButton onFetchAll={handleExportAll} label="Export" />
+          <Link to="/kanban" className="btn btn-secondary">
+            <Kanban size={18} />
+            <span className="btn-text-responsive">Kanban Board</span>
+          </Link>
+          <Link to="/applications/new" className="btn btn-primary">
+            <Plus size={18} />
+            <span className="btn-text-responsive">Add Application</span>
+          </Link>
+        </div>
       </div>
 
       {/* Filter and Search Bar */}

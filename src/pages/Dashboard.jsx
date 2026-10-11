@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getStats, listApplications, deleteApplication } from "../api/applications";
+import { getStats, listApplications, listAllApplications, deleteApplication } from "../api/applications";
 import StatCard from "../components/StatCard";
 import ApplicationCard from "../components/ApplicationCard";
+import MonthlyTrendChart from "../components/MonthlyTrendChart";
+import ExportButton from "../components/ExportButton";
 import Loader from "../components/Loader";
 import EmptyState from "../components/EmptyState";
 import ErrorState from "../components/ErrorState";
 import ConfirmModal from "../components/ConfirmModal";
-import { Plus, ArrowRight, Layers, Send, CalendarCheck, Award, XCircle, Briefcase } from "lucide-react";
+import {
+  Plus,
+  ArrowRight,
+  Layers,
+  Send,
+  CalendarCheck,
+  Award,
+  XCircle,
+  Briefcase,
+  Kanban,
+} from "lucide-react";
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -70,6 +82,11 @@ export default function Dashboard() {
     }
   };
 
+  const handleExportAll = async () => {
+    const res = await listAllApplications();
+    return res.results || [];
+  };
+
   if (loading) return <Loader message="Loading dashboard statistics..." />;
   if (error) return <ErrorState message="Could not load your dashboard stats." onRetry={fetchDashboardData} />;
 
@@ -80,13 +97,20 @@ export default function Dashboard() {
           <h1 className="page-title">Job Application Dashboard</h1>
           <p className="page-subtitle">Track your application pipeline metrics and recent activity</p>
         </div>
-        <Link to="/applications/new" className="btn btn-primary">
-          <Plus size={18} />
-          <span>Add Application</span>
-        </Link>
+        <div className="page-header-actions">
+          <ExportButton onFetchAll={handleExportAll} label="Export Data" />
+          <Link to="/kanban" className="btn btn-secondary">
+            <Kanban size={18} />
+            <span className="btn-text-responsive">Kanban Board</span>
+          </Link>
+          <Link to="/applications/new" className="btn btn-primary">
+            <Plus size={18} />
+            <span className="btn-text-responsive">Add Application</span>
+          </Link>
+        </div>
       </div>
 
-      {/* 5 Dynamic Stat Cards */}
+      {/* 6 Dynamic Stat Cards */}
       <div className="stats-grid">
         <StatCard title="Total" count={stats?.total} icon={Layers} badgeClass="badge-WISHLIST" />
         <StatCard title="Wishlist" count={stats?.wishlist} icon={Briefcase} badgeClass="badge-WISHLIST" />
@@ -95,6 +119,10 @@ export default function Dashboard() {
         <StatCard title="Offer" count={stats?.offer} icon={Award} badgeClass="badge-OFFER" />
         <StatCard title="Rejected" count={stats?.rejected} icon={XCircle} badgeClass="badge-REJECTED" />
       </div>
+
+      {/* Monthly Application Trends Chart */}
+      <MonthlyTrendChart trends={stats?.monthly_trends || []} stats={stats} />
+
 
       {/* Recent Applications Section */}
       <div style={{ marginTop: "2rem" }}>
