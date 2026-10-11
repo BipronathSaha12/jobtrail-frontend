@@ -53,6 +53,26 @@ export default function Login() {
   };
 
 
+  const handleQuickDemoLogin = async (demoUsername, demoPassword) => {
+    setForm({ username: demoUsername, password: demoPassword });
+    setLoading(true);
+    setError(null);
+    try {
+      await signIn({ username: demoUsername, password: demoPassword });
+      navigate(from, { replace: true });
+    } catch (err) {
+      if (err.response?.data?.detail) {
+        setError(err.response.data.detail);
+      } else {
+        setError("Could not sign in with demo account. Please ensure the backend server is running.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const adminUrl = (import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api").replace(/\/api\/?$/, "/admin/");
+
   return (
     <div className="auth-page">
       <div className="auth-card">
@@ -120,21 +140,55 @@ export default function Login() {
               </>
             )}
           </button>
-          
-          <button
-            type="button"
-            className="btn btn-secondary"
-            style={{ width: "100%", marginTop: "0.75rem" }}
-            disabled={loading}
-            onClick={() => {
-              setForm({ username: 'demo', password: 'demo123' });
-            }}
-            title="Auto-fill demo credentials"
-          >
-            <User size={18} />
-            <span>Use Demo Account</span>
-          </button>
         </form>
+
+        {/* Demo Accounts for Easy Testing */}
+        <div className="demo-accounts-box" style={{ marginTop: "1.5rem", padding: "1rem", backgroundColor: "rgba(255, 255, 255, 0.03)", borderRadius: "var(--radius-md)", border: "1px dashed var(--border-color)" }}>
+          <p style={{ fontSize: "0.825rem", fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+            <span>⚡ Quick Demo & Testing Access</span>
+          </p>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "0.5rem" }}>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              style={{ width: "100%", justifyContent: "flex-start", padding: "0.6rem 0.9rem", fontSize: "0.875rem" }}
+              disabled={loading}
+              onClick={() => handleQuickDemoLogin("demo", "demo123")}
+              title="1-click sign in as demo job seeker"
+            >
+              <User size={16} style={{ color: "var(--accent-primary)" }} />
+              <span style={{ flex: 1, textAlign: "left" }}>1-Click Job Seeker Demo</span>
+              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>demo / demo123</span>
+            </button>
+
+            <button
+              type="button"
+              className="btn btn-secondary"
+              style={{ width: "100%", justifyContent: "flex-start", padding: "0.6rem 0.9rem", fontSize: "0.875rem" }}
+              disabled={loading}
+              onClick={() => handleQuickDemoLogin("admin", "admin123")}
+              title="1-click sign in as demo admin"
+            >
+              <Lock size={16} style={{ color: "#a855f7" }} />
+              <span style={{ flex: 1, textAlign: "left" }}>1-Click Admin Demo</span>
+              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>admin / admin123</span>
+            </button>
+          </div>
+
+          <div style={{ marginTop: "0.75rem", paddingTop: "0.75rem", borderTop: "1px solid rgba(255, 255, 255, 0.06)", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.8rem", color: "var(--text-muted)" }}>
+            <span>Django Admin Portal:</span>
+            <a
+              href={adminUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#a5b4fc", textDecoration: "none", fontWeight: 600 }}
+              title="Open Django Admin in a new tab"
+            >
+              Open /admin/ →
+            </a>
+          </div>
+        </div>
 
         <div className="auth-footer">
           New here? <Link to="/register" className="auth-link">Create account</Link>

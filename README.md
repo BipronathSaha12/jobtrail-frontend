@@ -21,6 +21,16 @@
 
 ---
 
+## 🔐 Demo Accounts for Testing & Evaluation
+
+| User Type | Username | Password | Purpose |
+| :--- | :--- | :--- | :--- |
+| **Client Job Seeker Demo** | `demo` | `demo123` | Pre-seeded with 16 realistic applications (Wishlist, Applied, Interview, Offer, Rejected) with 1-click login on `/login` |
+| **Secondary Job Seeker** | `demouser` | `password123` | Alternative pre-seeded demo user |
+| **Admin Superuser** | `admin` | `admin123` | Django Admin Panel access (`/admin/`) |
+
+---
+
 ## 🚀 Setup & Local Execution
 
 1. **Navigate to frontend directory**:
