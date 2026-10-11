@@ -13,7 +13,7 @@ export const formatApplicationsForExport = (applications = []) => {
     "Location": app.location || "",
     "Expected Salary": app.expected_salary ? `$${Number(app.expected_salary).toLocaleString()}` : "",
     "Applied Date": app.applied_on || "",
-    "Job Posting URL": app.job_url || "",
+    "Job Posting URL": app.job_link || app.job_url || "",
     "Notes": app.notes || "",
     "Created Date": app.created_at ? new Date(app.created_at).toLocaleString() : "",
   }));
